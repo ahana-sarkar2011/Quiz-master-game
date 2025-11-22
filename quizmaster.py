@@ -41,7 +41,7 @@ def draw():
     if gameover:
         screen.fill("pink")
         screen.draw.text("Game Over",(300,300),fontsize=100,color="black")
-        screen.draw.text("Your score is"+str(score),(500,400),color="blue")
+        screen.draw.text("Your score is "+str(score),(500,400),color="blue")
 
 def move_marquee():
     marqueebox.x-=10
@@ -55,6 +55,8 @@ def timeup():
     global timer
     if timer:
         timer-=1
+    else:
+        quizover()
 
 def read_question_file():
     global questions
@@ -69,6 +71,12 @@ def read_next_question():
 def on_mouse_down(pos):
     global score,timer,question
     index=1
+    if skipbox.collidepoint(pos):
+        if questions:
+            question=read_next_question()
+            timer=10
+        else:
+            quizover()
     for i in answerboxes:
         if i.collidepoint(pos):
             if index==int(question[5]):
